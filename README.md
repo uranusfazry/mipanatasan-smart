@@ -1,1 +1,0 @@
-# mipanatasan-smart
