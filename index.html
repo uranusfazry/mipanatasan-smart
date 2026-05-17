@@ -57,12 +57,16 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--primary-900);
             color: var(--text-light);
-            min-height: 100vh;
-            overflow-x: hidden;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -92,6 +96,7 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             object-fit: cover;
+            object-position: center;
             filter: brightness(0.85); /* Slightly darker for contrast */
             z-index: 1;
         }
@@ -263,22 +268,24 @@
         #dashboard-container {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
-            margin-bottom: 3rem;
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+            width: 100%;
         }
 
         .portal-section {
             background: rgba(6, 78, 59, 0.4);
             border: 1px solid rgba(220, 252, 231, 0.1);
             border-radius: 24px;
-            padding: 1.75rem;
+            padding: 2rem;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
         }
 
         .section-header {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.75rem;
             border-bottom: 1px solid rgba(220, 252, 231, 0.15);
             padding-bottom: 1.25rem;
             display: flex;
@@ -325,16 +332,21 @@
         .portals-grid {
             display: grid;
             gap: 1.5rem;
-            grid-template-columns: 1fr;
+            width: 100%;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
         }
 
-        @media (min-width: 640px) { .portals-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 1024px) { .portals-grid { grid-template-columns: repeat(3, 1fr); } }
-        @media (min-width: 1280px) { .portals-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 1024px) { 
+            .portals-grid { 
+                gap: 2rem; 
+                grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
+            } 
+        }
         
         @media (max-width: 640px) {
-            .portal-section { padding: 1.25rem; }
+            .portal-section { padding: 1.25rem 1rem; border-radius: 20px; }
             .section-header { flex-direction: column; gap: 0.75rem; align-items: center; text-align: center; }
+            .portals-grid { gap: 1rem; grid-template-columns: 1fr; }
         }
 
         /* Portal Cards - Elegant Dashboard Style */
@@ -568,6 +580,7 @@
             border-top: 1px solid rgba(220, 252, 231, 0.1);
             margin-top: auto; 
             min-height: 85px;
+            width: 100%;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
             padding: 1.5rem 1rem;
@@ -601,7 +614,15 @@
         }
 
         /* Utility Classes */
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        .container { 
+            width: 100%; 
+            max-width: 1600px; 
+            margin: 0 auto; 
+            padding-inline: 1.5rem; 
+        }
+        @media (min-width: 768px) { .container { padding-inline: 2.5rem; } }
+        @media (min-width: 1280px) { .container { padding-inline: 4rem; } }
+        
         .hidden { display: none; }
 
         /* QR Wrapper & Frame */
@@ -895,6 +916,52 @@
             color: #fff;
             transform: translateY(-1px);
         }
+
+        /* Fullscreen Toggle Button - Enterprise Modern */
+        .fullscreen-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(6, 78, 59, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(220, 252, 231, 0.15);
+            color: var(--text-light);
+            font-size: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 9998; /* Di bawah login screen, di atas konten */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            outline: none;
+        }
+
+        .fullscreen-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+            background: rgba(22, 101, 52, 0.8);
+            border-color: rgba(34, 197, 94, 0.4);
+            color: var(--accent-400);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .fullscreen-btn:active {
+            transform: translateY(0) scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+            .fullscreen-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -947,12 +1014,17 @@
     </div>
     <canvas id="particle-canvas"></canvas>
 
+    <!-- Fullscreen Toggle Button -->
+    <button id="fullscreen-toggle" class="fullscreen-btn" onclick="toggleFullScreen()" title="Mode Layar Penuh">
+        <i class="fas fa-expand"></i>
+    </button>
+
     <!-- Notification Container -->
     <div id="notif-container" class="notif-container"></div>
 
     <!-- Navbar -->
     <nav class="navbar fixed top-0 left-0 right-0 z-50 content-layer" style="position: fixed; top: 0; left: 0; right: 0; z-index: 50;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 1rem;">
+        <div class="container">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <!-- Logo -->
                 <div id="logo-container" style="display: flex; align-items: center; cursor: pointer; user-select: none;">
@@ -1066,7 +1138,7 @@
     </div>
 
     <!-- Main Content -->
-    <main class="container content-layer" style="padding-top: 130px; padding-bottom: 2rem;">
+    <main class="container content-layer" style="padding-top: 130px; padding-bottom: 3rem; flex-grow: 1; display: flex; flex-direction: column;">
         <!-- Dashboard Container (Grouped) -->
         <div id="dashboard-container">
             <!-- Portal groups & cards rendered by JS -->
@@ -1806,6 +1878,40 @@
             // Jalankan cek sesi saat DOM siap
             checkSession();
         })();
+
+        // ========== FULLSCREEN SYSTEM ==========
+        window.toggleFullScreen = function() {
+            const doc = window.document;
+            const docEl = doc.documentElement;
+            const icon = document.querySelector('#fullscreen-toggle i');
+
+            const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+            const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+            if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+                if(requestFullScreen) requestFullScreen.call(docEl);
+                if(icon) icon.classList.replace('fa-expand', 'fa-compress');
+            } else {
+                if(cancelFullScreen) cancelFullScreen.call(doc);
+                if(icon) icon.classList.replace('fa-compress', 'fa-expand');
+            }
+        };
+
+        // Deteksi jika user keluar dari fullscreen menggunakan tombol ESC
+        const updateFullscreenIcon = function() {
+            const icon = document.querySelector('#fullscreen-toggle i');
+            if (!icon) return;
+            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+                icon.classList.replace('fa-compress', 'fa-expand');
+            } else {
+                icon.classList.replace('fa-expand', 'fa-compress');
+            }
+        };
+
+        document.addEventListener('fullscreenchange', updateFullscreenIcon);
+        document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
+        document.addEventListener('mozfullscreenchange', updateFullscreenIcon);
+        document.addEventListener('MSFullscreenChange', updateFullscreenIcon);
     </script>
 </body>
 </html>
