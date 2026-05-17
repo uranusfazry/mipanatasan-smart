@@ -933,21 +933,32 @@
         </div>
 
         <div style="flex-grow: 1; overflow-y: auto;">
-            <h3 class="font-heading text-accent" style="font-size: 0.8rem; margin-bottom: 0.75rem; margin-top: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Portal</h3>
+            <h3 class="font-heading text-accent" style="font-size: 0.8rem; margin-bottom: 0.75rem; margin-top: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Kelola Portal</h3>
             
             <button onclick="showAddLinkModal(); closeMobileMenu();" class="btn-primary" style="width: 100%; font-size: 0.85rem; margin-bottom: 1rem;">
-                <i class="fas fa-plus" style="margin-right: 0.5rem;"></i>Tambah Portal
+                <i class="fas fa-plus" style="margin-right: 0.5rem;"></i>Tambah Portal Baru
             </button>
             
-            <button onclick="backupData(); closeMobileMenu();" class="btn-secondary" style="width: 100%; font-size: 0.85rem; margin-bottom: 1rem;">
-                <i class="fas fa-download" style="margin-right: 0.5rem;"></i>Backup
-            </button>
+            <h3 class="font-heading text-accent" style="font-size: 0.8rem; margin-top: 1.5rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Data Akademik</h3>
             
-            <button onclick="generateSmartLink(); closeMobileMenu();" class="btn-secondary" style="width: 100%; font-size: 0.85rem; margin-bottom: 1rem;">
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-bottom: 0.75rem;">
+                <button onclick="importData(); closeMobileMenu();" class="btn-secondary" style="width: 100%; font-size: 0.75rem; padding: 0.5rem 1rem;">
+                    <i class="fas fa-upload" style="margin-right: 0.25rem;"></i>Import
+                </button>
+                <button onclick="backupData(); closeMobileMenu();" class="btn-secondary" style="width: 100%; font-size: 0.75rem; padding: 0.5rem 1rem;">
+                    <i class="fas fa-download" style="margin-right: 0.25rem;"></i>Backup
+                </button>
+            </div>
+            
+            <button onclick="generateSmartLink(); closeMobileMenu();" class="btn-secondary" style="width: 100%; font-size: 0.85rem; margin-bottom: 0.75rem;">
                 <i class="fas fa-link" style="margin-right: 0.5rem;"></i>Generate Smart Link
             </button>
+            
+            <button onclick="showWhatsAppModal(); closeMobileMenu();" class="btn-secondary" style="width: 100%; font-size: 0.85rem; margin-bottom: 1rem;">
+                <i class="fab fa-whatsapp" style="margin-right: 0.5rem;"></i>Generate WhatsApp Link
+            </button>
 
-            <h3 class="font-heading text-accent" style="font-size: 0.8rem; margin-top: 1rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Sistem</h3>
+            <h3 class="font-heading text-accent" style="font-size: 0.8rem; margin-top: 1.5rem; margin-bottom: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em;">Pengaturan</h3>
             
             <button onclick="showConfirmationModal('Reset seluruh data sistem portal?', resetAllSettings); closeMobileMenu();" class="btn-secondary" style="width: 100%; font-size: 0.85rem; border-color: rgba(239, 68, 68, 0.4); color: var(--error-red); margin-bottom: 1rem;">
                 <i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>Reset Sistem
