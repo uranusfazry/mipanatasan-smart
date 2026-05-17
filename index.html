@@ -787,9 +787,9 @@
         .login-logo-wrap span {
             font-family: 'Inter', sans-serif;
             font-size: 0.75rem;
-            color: rgba(220, 252, 231, 0.7);
-            font-weight: 500;
-            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.65); /* Warna lebih netral dan bersih */
+            font-weight: 600; /* Semi-bold agar lebih tegas dan profesional */
+            letter-spacing: 0.12em; /* Spasi huruf dilebarkan ala enterprise modern */
             text-transform: uppercase;
             text-align: center;
         }
@@ -910,12 +910,35 @@
         }
 
         .login-footer-note {
-            margin-top: 2rem;
+            margin-top: 2.25rem;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .login-footer-note .copyright {
             font-family: 'Inter', sans-serif;
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.45);
             letter-spacing: 0.02em;
+        }
+
+        .login-footer-note .branding {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.55);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .login-footer-note .branding:hover {
+            color: #BBF7D0;
+            text-shadow: 0 0 12px rgba(187, 247, 208, 0.2);
         }
 
         @keyframes loginShake {
@@ -1014,7 +1037,7 @@
             <div class="login-logo-wrap">
                 <img src="https://files.catbox.moe/1mcewk.png" alt="Logo MI Panatasan" crossorigin="anonymous">
                 <h1>MI PANATASAN</h1>
-                <span>Portal Akademik Digital — Sistem Masuk</span>
+                <span>Portal Akademik Digital</span>
             </div>
 
             <div class="login-field">
@@ -1045,7 +1068,10 @@
                 <i class="fas fa-sign-in-alt" style="margin-right:6px;"></i>Masuk ke Sistem
             </button>
 
-            <p class="login-footer-note">© 2026 MI Panatasan · Powered by Uranus Technology</p>
+            <div class="login-footer-note">
+                <span class="copyright">© 2026 MI Panatasan</span>
+                <span class="branding">Powered by Uranus School System</span>
+            </div>
         </div>
     </div>
 
@@ -1189,7 +1215,7 @@
 
     <!-- Footer -->
     <footer class="content-layer">
-        <p class="footer-copyright">© 2026 MI Panatasan Digital System | All Rights Reserved</p>
+        <p class="footer-copyright">© 2026 MI Panatasan | All Rights Reserved</p>
         <p class="footer-brand">Powered by Uranus School System</p>
     </footer>
 
