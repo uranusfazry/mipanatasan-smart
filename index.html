@@ -2,7 +2,8 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 1. META VIEWPORT REPLACEMENT (Kunci Zoom & Full Viewport) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Portal Akademik | MI Panatasan</title>
 
     <!-- Favicon (School) -->
@@ -57,10 +58,23 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* 2. CSS MOBILE OPTIMIZATION & SCROLL STABILIZATION */
         html, body {
             width: 100%;
-            min-height: 100vh;
+            /* Menggunakan dvh (dynamic viewport height) untuk mencegah layout loncat saat address bar muncul/hilang */
+            min-height: 100dvh; 
+            height: 100%;
             overflow-x: hidden;
+            /* Mematikan efek bounce/karet (pull-to-refresh) khas browser mobile agar terasa seperti native app */
+            overscroll-behavior-y: none;
+            /* Hanya izinkan scroll vertikal, matikan pinch zoom secara bawaan */
+            touch-action: pan-y;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* Matikan double tap zoom di semua elemen interaktif */
+        button, input, select, textarea, a, .portal-card, .nav-item {
+            touch-action: manipulation;
         }
 
         body {
@@ -72,6 +86,9 @@
             flex-direction: column;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            /* Fallback untuk browser lawas */
+            min-height: 100vh;
+            min-height: 100dvh;
         }
 
         /* Background Effects & Overlays */
@@ -971,6 +988,13 @@
             transform: translateY(0) scale(0.95);
         }
 
+        /* Class untuk menyembunyikan tombol saat Fullscreen aktif */
+        .hidden-fullscreen-btn {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            transform: scale(0.85) translateY(10px) !important;
+        }
+
         @media (max-width: 768px) {
             .fullscreen-btn {
                 bottom: 20px;
@@ -1385,6 +1409,23 @@
     <input type="file" id="import-file-input" class="hidden" style="display: none;" accept=".zip,.txt,application/json">
 
     <script>
+        // 3. JAVASCRIPT ANTI-ZOOM (Fallback Khusus untuk iOS Safari)
+        // iOS Safari sering mengabaikan meta user-scalable=no, ini akan menguncinya secara paksa
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1 && event.scale !== undefined) { 
+                event.preventDefault(); 
+            }
+        }, { passive: false });
+        
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) { 
+                event.preventDefault(); 
+            }
+            lastTouchEnd = now;
+        }, false);
+
         // --- SOFT GREEN PARTICLE SYSTEM (PURE VISUAL, NO LOGIC INTERFERENCE) ---
         (function initParticles() {
             const canvas = document.getElementById('particle-canvas');
@@ -1901,35 +1942,37 @@
         window.toggleFullScreen = function() {
             const doc = window.document;
             const docEl = doc.documentElement;
-            const icon = document.querySelector('#fullscreen-toggle i');
 
             const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
             const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
 
             if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
                 if(requestFullScreen) requestFullScreen.call(docEl);
-                if(icon) icon.classList.replace('fa-expand', 'fa-compress');
             } else {
                 if(cancelFullScreen) cancelFullScreen.call(doc);
-                if(icon) icon.classList.replace('fa-compress', 'fa-expand');
             }
         };
 
-        // Deteksi jika user keluar dari fullscreen menggunakan tombol ESC
-        const updateFullscreenIcon = function() {
-            const icon = document.querySelector('#fullscreen-toggle i');
-            if (!icon) return;
-            if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-                icon.classList.replace('fa-compress', 'fa-expand');
+        // Deteksi perubahan status fullscreen untuk menyembunyikan/menampilkan tombol
+        const handleFullscreenChange = function() {
+            const btn = document.getElementById('fullscreen-toggle');
+            if (!btn) return;
+            
+            // Cek apakah layar sedang dalam mode fullscreen
+            const isFullscreen = document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+            
+            if (isFullscreen) {
+                btn.classList.add('hidden-fullscreen-btn'); // Sembunyikan dengan smooth
             } else {
-                icon.classList.replace('fa-expand', 'fa-compress');
+                btn.classList.remove('hidden-fullscreen-btn'); // Tampilkan kembali dengan smooth
             }
         };
 
-        document.addEventListener('fullscreenchange', updateFullscreenIcon);
-        document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
-        document.addEventListener('mozfullscreenchange', updateFullscreenIcon);
-        document.addEventListener('MSFullscreenChange', updateFullscreenIcon);
+        // Event listeners untuk berbagai browser
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.addEventListener('MSFullscreenChange', handleFullscreenChange);
     </script>
 </body>
 </html>
