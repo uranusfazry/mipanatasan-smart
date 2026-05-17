@@ -259,16 +259,83 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
-        /* Grid */
-        #portals-grid {
+        /* Grid & Grouping System */
+        #dashboard-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .portal-section {
+            background: rgba(6, 78, 59, 0.4);
+            border: 1px solid rgba(220, 252, 231, 0.1);
+            border-radius: 24px;
+            padding: 1.75rem;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .section-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(220, 252, 231, 0.15);
+            padding-bottom: 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .section-icon {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--accent-400);
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .section-title-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 0.03em;
+            margin-bottom: 0.3rem;
+        }
+
+        .section-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.5;
+        }
+
+        .portals-grid {
             display: grid;
             gap: 1.5rem;
-            margin-bottom: 3rem;
             grid-template-columns: 1fr;
         }
 
-        @media (min-width: 640px) { #portals-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 1024px) { #portals-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 640px) { .portals-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .portals-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1280px) { .portals-grid { grid-template-columns: repeat(4, 1fr); } }
+        
+        @media (max-width: 640px) {
+            .portal-section { padding: 1.25rem; }
+            .section-header { flex-direction: column; gap: 0.75rem; align-items: center; text-align: center; }
+        }
 
         /* Portal Cards - Elegant Dashboard Style */
         .portal-card {
@@ -495,16 +562,43 @@
 
         /* Footer */
         footer {
-            background: rgba(6, 78, 59, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(6, 78, 59, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-top: 1px solid rgba(220, 252, 231, 0.1);
-            margin-top: auto; height: 80px;
+            margin-top: auto; 
+            min-height: 85px;
             display: flex; flex-direction: column;
             align-items: center; justify-content: center;
-            padding: 0 1rem;
+            padding: 1.5rem 1rem;
+            gap: 0.4rem; /* Spacing vertikal yang lebih rapi */
         }
 
-        footer p { margin-bottom: 0.25rem; font-family: 'Inter', sans-serif; color: rgba(255,255,255,0.8); }
+        .footer-copyright { 
+            font-family: 'Inter', sans-serif; 
+            font-size: 0.8rem; 
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.75); /* Soft white */
+            letter-spacing: 0.02em;
+            margin: 0;
+        }
+
+        .footer-brand {
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 600; /* Semi-bold */
+            color: rgba(250, 204, 21, 0.85); /* Soft gold (#FACC15) dengan opacity */
+            text-transform: uppercase; /* Uppercase modern */
+            letter-spacing: 0.12em; /* Letter spacing halus ala enterprise */
+            margin: 0;
+            transition: opacity 0.3s ease, color 0.3s ease; /* Transisi super smooth */
+            cursor: default;
+        }
+
+        .footer-brand:hover {
+            color: #FACC15; /* Solid gold saat di-hover */
+            opacity: 1;
+        }
 
         /* Utility Classes */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
@@ -973,16 +1067,16 @@
 
     <!-- Main Content -->
     <main class="container content-layer" style="padding-top: 130px; padding-bottom: 2rem;">
-        <!-- Portal Grid -->
-        <div id="portals-grid">
-            <!-- Portal cards rendered by JS -->
+        <!-- Dashboard Container (Grouped) -->
+        <div id="dashboard-container">
+            <!-- Portal groups & cards rendered by JS -->
         </div>
     </main>
 
     <!-- Footer -->
     <footer class="content-layer">
-        <p class="font-heading" style="font-size: 0.85rem; font-weight: 500;">© 2026 MI Panatasan Digital System | All Rights Reserved</p>
-        <p class="font-heading text-accent" style="font-size: 0.75rem; opacity: 0.9;">Powered by Uranus Technology</p>
+        <p class="footer-copyright">© 2026 MI Panatasan Digital System | All Rights Reserved</p>
+        <p class="footer-brand">Powered by Uranus School System</p>
     </footer>
 
     <!-- Add Portal Modal -->
@@ -1241,7 +1335,7 @@
 
             // DOM ELEMENTS
             const logoContainer = document.getElementById('logo-container');
-            const portalsGrid = document.getElementById('portals-grid');
+            const dashboardContainer = document.getElementById('dashboard-container');
             const portalForm = document.getElementById('portal-form');
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
@@ -1296,28 +1390,63 @@
                 load(payload) { if (payload.startsWith("v5_")) return UrlManager.decode(payload.slice(3)); return null; }
             };
 
-            // SCHOOL THEMED DEFAULT PORTALS
+            // SUPER APP AKADEMIK DIGITAL ECOSYSTEM
             const defaultPortals = [
                 {
-                    name: 'Sistem Informasi Akademik',
-                    url: '#',
-                    icon: 'fas fa-user-graduate',
+                    name: 'Website Resmi Sekolah',
+                    url: 'https://mipanatasan.vercel.app/',
+                    icon: 'fas fa-school',
                     color: '#166534',
-                    description: 'Portal utama akademik bagi siswa, guru, dan tenaga kependidikan MI Panatasan.'
+                    description: 'Portal utama MI Panatasan yang berisi profil sekolah, informasi guru, visi misi, galeri kegiatan, dan informasi resmi sekolah.'
                 },
                 {
-                    name: 'E-Learning Terpadu',
-                    url: '#',
-                    icon: 'fas fa-laptop-code',
+                    name: 'Asesmen Kompetensi Siswa',
+                    url: 'https://sites.google.com/view/mipanatasan/ujian',
+                    icon: 'fas fa-clipboard-check',
                     color: '#064E3B',
-                    description: 'Akses materi pembelajaran, tugas harian, dan modul ujian berbasis digital.'
+                    description: 'Sistem ujian asesmen digital siswa berbasis online untuk evaluasi pembelajaran dan kompetensi akademik.'
                 },
-                 {
-                    name: 'Dokumen & PPDB Online',
-                    url: '#',
-                    icon: 'fas fa-file-alt',
+                {
+                    name: 'Rapot & Ijazah Otomatis',
+                    url: 'https://mipanatasan-rapot.vercel.app/',
+                    icon: 'fas fa-file-signature',
+                    color: '#FACC15',
+                    description: 'Sistem input nilai otomatis untuk pengolahan rapot digital dan pencetakan ijazah akademik secara efisien.'
+                },
+                {
+                    name: 'Simulasi TKA Digital',
+                    url: 'https://mipanatasantka.vercel.app/',
+                    icon: 'fas fa-laptop-medical',
+                    color: '#15803D',
+                    description: 'Platform simulasi Tes Kemampuan Akademik (TKA) sebagai latihan siswa sebelum mengikuti asesmen utama.'
+                },
+                {
+                    name: 'Administrasi Sekolah',
+                    url: 'https://mipanatasan-administrasi.vercel.app/',
+                    icon: 'fas fa-chart-line',
+                    color: '#059669',
+                    description: 'Dashboard administrasi sekolah yang menampilkan program kerja, aktivitas bulanan, dan perkembangan sistem akademik.'
+                },
+                {
+                    name: 'APK Ujian & Admin',
+                    url: 'https://tepilayar.my.id/',
+                    icon: 'fas fa-user-shield',
+                    color: '#022C22',
+                    description: 'Sistem pengelolaan ujian dan administrasi pengawas berbasis aplikasi digital terintegrasi.'
+                },
+                {
+                    name: 'Generator Soal AI',
+                    url: 'https://gemini.google.com/share/ea143e15282e',
+                    icon: 'fas fa-robot',
                     color: '#EAB308',
-                    description: 'Informasi Pendaftaran Peserta Didik Baru (PPDB) dan pengumuman resmi instansi.'
+                    description: 'Sistem AI otomatis untuk membuat soal ujian dan upload langsung ke Google Form secara cepat dan efisien.'
+                },
+                {
+                    name: 'Data Hasil Ujian Siswa',
+                    url: 'https://docs.google.com/spreadsheets/d/1_IN1ZTixMNGdUfaFhYziUUBm5nkOyyRrVdG4s97WyQs/edit?gid=0#gid=0',
+                    icon: 'fas fa-table',
+                    color: '#22C55E',
+                    description: 'Dashboard spreadsheet digital untuk monitoring hasil ujian siswa secara realtime dan terintegrasi.'
                 }
             ];
 
@@ -1357,38 +1486,108 @@
             window.showConfirmationModal = function(message, callback) { confirmationMessage.textContent = message; onConfirmCallback = callback; confirmationModal.classList.remove('hidden'); confirmationModal.style.display = 'flex'; }
 
             function renderPortals() {
-                portalsGrid.innerHTML = '';
+                dashboardContainer.innerHTML = '';
+                
+                // Konfigurasi Kategori Group
+                const groups = [
+                    {
+                        id: 'info', title: 'Informasi Sekolah', icon: 'fas fa-school', desc: 'Portal utama informasi dan profil resmi MI Panatasan.',
+                        members: ['Website Resmi Sekolah', 'Administrasi Sekolah'], portals: []
+                    },
+                    {
+                        id: 'ujian', title: 'Sistem Ujian & Asesmen', icon: 'fas fa-clipboard-check', desc: 'Platform asesmen digital, simulasi TKA, dan sistem evaluasi akademik siswa.',
+                        members: ['Asesmen Kompetensi Siswa', 'Simulasi TKA Digital'], portals: []
+                    },
+                    {
+                        id: 'admin_ujian', title: 'Administrasi Ujian Digital', icon: 'fas fa-laptop-code', desc: 'Ekosistem lengkap pengelolaan ujian, pembuatan soal otomatis, dan monitoring hasil siswa.',
+                        members: ['APK Ujian & Admin', 'Generator Soal AI', 'Data Hasil Ujian Siswa'], portals: []
+                    },
+                    {
+                        id: 'akademik', title: 'Akademik & Rapot', icon: 'fas fa-file-signature', desc: 'Sistem pengolahan nilai akademik, rapot digital, dan ijazah otomatis.',
+                        members: ['Rapot & Ijazah Otomatis'], portals: []
+                    },
+                    {
+                        id: 'lainnya', title: 'Portal Lainnya', icon: 'fas fa-th-large', desc: 'Akses cepat ke portal akademik dan layanan digital tambahan.',
+                        members: [], portals: []
+                    }
+                ];
+
+                // Proses pengelompokan portal
                 portals.forEach((portal, index) => {
-                    const portalElement = document.createElement('div'); portalElement.style.height = '100%';
-                    const portalColor = portal.color || '#166534';
-                    const isLocked = portal.password && portal.password.trim() !== "";
-                    
-                    let iconClass = portal.icon || 'fas fa-graduation-cap';
-                    if (!portal.icon || (!portal.icon.startsWith('fa') && !portal.icon.startsWith('http') && !portal.icon.startsWith('data:image'))) iconClass = 'fas fa-graduation-cap';
-                    
-                    const iconHtml = (iconClass.startsWith('data:image') || iconClass.startsWith('http'))
-                        ? `<img src="${iconClass}" style="margin: 0 auto 1rem; height: 3rem; width: 3rem; object-fit: contain;" alt="${portal.name}"><i class="fas fa-graduation-cap" style="font-size: 3rem; margin-bottom: 1rem; display: none;"></i>`
-                        : `<i class="${iconClass}" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>`;
-                        
-                    const descriptionHtml = portal.description ? portal.description : '&nbsp;';
-                    const lockIconHtml = isLocked ? `<div class="lock-indicator"><i class="fas fa-lock"></i></div>` : '';
-                    const clickAction = `onclick="handlePortalClick(event, ${index})"`;
-                    
-                    portalElement.innerHTML = `
-                    <div class="portal-card" style="--portal-color: ${portalColor}; height: 100%;" ${clickAction}>
-                        ${lockIconHtml}
-                        <div style="display: block; height: 100%; padding: 1.8rem 1.5rem; text-align: center; position: relative;">
-                            <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                                ${iconHtml}
-                                <h3 class="font-heading" style="font-weight: 700; word-break: break-word; font-size: 1.15rem; margin-bottom: 0.25rem;">${portal.name}</h3>
-                                <p class="portal-description">${descriptionHtml}</p>
+                    portal.originalIndex = index; // Menyimpan index asli untuk aksi delete & klik agar tidak error
+                    let matched = false;
+                    for (let i = 0; i < groups.length - 1; i++) {
+                        if (groups[i].members.includes(portal.name)) {
+                            groups[i].portals.push(portal);
+                            matched = true;
+                            break;
+                        }
+                    }
+                    if (!matched) {
+                        groups[groups.length - 1].portals.push(portal);
+                    }
+                });
+
+                // Render setiap group ke layar
+                groups.forEach(group => {
+                    if (group.portals.length === 0) return; // Sembunyikan group jika kosong
+
+                    const sectionEl = document.createElement('div');
+                    sectionEl.className = 'portal-section';
+
+                    const headerHtml = `
+                        <div class="section-header">
+                            <div class="section-icon"><i class="${group.icon}"></i></div>
+                            <div class="section-title-wrapper">
+                                <h2 class="section-title">${group.title}</h2>
+                                <p class="section-desc">${group.desc}</p>
                             </div>
-                            <button onclick="event.stopPropagation(); showConfirmationModal('Hapus instansi portal ${portal.name}?', () => deletePortalAction(${index}))" class="delete-btn">
-                                <i class="fas fa-trash" style="font-size: 0.85rem;"></i>
-                            </button>
                         </div>
-                    </div>`;
-                    portalsGrid.appendChild(portalElement);
+                    `;
+
+                    const gridEl = document.createElement('div');
+                    gridEl.className = 'portals-grid';
+
+                    group.portals.forEach(portal => {
+                        const portalElement = document.createElement('div'); 
+                        portalElement.style.height = '100%';
+                        
+                        const portalColor = portal.color || '#166534';
+                        const isLocked = portal.password && portal.password.trim() !== "";
+                        
+                        let iconClass = portal.icon || 'fas fa-graduation-cap';
+                        if (!portal.icon || (!portal.icon.startsWith('fa') && !portal.icon.startsWith('http') && !portal.icon.startsWith('data:image'))) iconClass = 'fas fa-graduation-cap';
+                        
+                        const iconHtml = (iconClass.startsWith('data:image') || iconClass.startsWith('http'))
+                            ? `<img src="${iconClass}" style="margin: 0 auto 1rem; height: 3rem; width: 3rem; object-fit: contain;" alt="${portal.name}"><i class="fas fa-graduation-cap" style="font-size: 3rem; margin-bottom: 1rem; display: none;"></i>`
+                            : `<i class="${iconClass}" style="font-size: 2.5rem; margin-bottom: 1rem;"></i>`;
+                            
+                        const descriptionHtml = portal.description ? portal.description : '&nbsp;';
+                        const lockIconHtml = isLocked ? `<div class="lock-indicator"><i class="fas fa-lock"></i></div>` : '';
+                        
+                        // Gunakan originalIndex
+                        const clickAction = `onclick="handlePortalClick(event, ${portal.originalIndex})"`;
+                        
+                        portalElement.innerHTML = `
+                        <div class="portal-card" style="--portal-color: ${portalColor}; height: 100%;" ${clickAction}>
+                            ${lockIconHtml}
+                            <div style="display: block; height: 100%; padding: 1.8rem 1.5rem; text-align: center; position: relative;">
+                                <div style="position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                                    ${iconHtml}
+                                    <h3 class="font-heading" style="font-weight: 700; word-break: break-word; font-size: 1.15rem; margin-bottom: 0.25rem;">${portal.name}</h3>
+                                    <p class="portal-description">${descriptionHtml}</p>
+                                </div>
+                                <button onclick="event.stopPropagation(); showConfirmationModal('Hapus instansi portal ${portal.name}?', () => deletePortalAction(${portal.originalIndex}))" class="delete-btn">
+                                    <i class="fas fa-trash" style="font-size: 0.85rem;"></i>
+                                </button>
+                            </div>
+                        </div>`;
+                        gridEl.appendChild(portalElement);
+                    });
+
+                    sectionEl.innerHTML = headerHtml;
+                    sectionEl.appendChild(gridEl);
+                    dashboardContainer.appendChild(sectionEl);
                 });
             }
 
